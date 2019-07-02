@@ -74,14 +74,6 @@ session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
 p1 = mdb.models['Model-1'].parts['Part-1']
 session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=OFF, bcs=OFF,
                                                            predefinedFields=OFF, connectors=OFF)
-session.viewports['Viewport: 1'].setValues(displayedObject=p1)
-session.viewports['Viewport: 1'].partDisplay.setValues(mesh=ON)
-session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
-    meshTechnique=ON)
-session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
-    referenceRepresentation=OFF)
-session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON,
-                                                           predefinedFields=ON, connectors=ON)
 session.viewports['Viewport: 1'].view.setValues(nearPlane=248.599,
                                                 farPlane=483.108, width=338.585, height=132.026, viewOffsetX=18.5983,
                                                 viewOffsetY=-3.14915)
