@@ -99,8 +99,8 @@ def createLoadStep(model, loadStepName, previousStepName):
 
 def createEncastreBoundaryCondition(instance, model, part, createStepName, boundaryConditionName):
     region = instance.sets['SetBCFixedSide']
-    model.EncastreBC(name=boundaryConditionName,
-                     createStepName=createStepName, region=region)
+    return model.EncastreBC(name=boundaryConditionName,
+                            createStepName=createStepName, region=region)
 
 
 def createPressure(model, instance, createStepName, pressureName):
