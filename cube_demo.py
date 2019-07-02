@@ -114,6 +114,7 @@ vector = (v1[0], v2[1])
 p.generateBottomUpExtrudedMesh(geometrySourceSide=pickedGeomSourceSide,
                                extrudeVector=vector, numberOfLayers=50)
 a.regenerate()
+session.viewports['Viewport: 1'].setValues(displayedObject=a)
 session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON,
                                                            predefinedFields=ON, connectors=ON)
 session.viewports['Viewport: 1'].view.setValues(nearPlane=239.77,
