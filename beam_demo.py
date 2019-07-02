@@ -97,7 +97,7 @@ def createLoadStep(model, loadStepName, previousStepName):
     return model.StaticStep(name=loadStepName, previous=previousStepName, timePeriod=1.0, initialInc=0.1)
 
 
-def createEncastreBoundaryCondition(instance, model, part, createStepName, boundaryConditionName):
+def createEncastreBoundaryCondition(instance, model, createStepName, boundaryConditionName):
     region = instance.sets['SetBCFixedSide']
     return model.EncastreBC(name=boundaryConditionName,
                             createStepName=createStepName, region=region)
@@ -116,7 +116,7 @@ def createPressure(model, instance, createStepName, pressureName):
 model = mdb.models[mdb.models.keys()[0]]
 sketch = createSketch(model, SKETCH_NAME)
 part = createPart(model, sketch, PART_NAME)
-material = materials.add_all(model)
+materials.add_all(model)
 mesh = createBottomUpExtrudedMesh(part)
 section = createSection(model, part, MATERIAL_NAME, SECTION_NAME)
 createSets(part)
@@ -124,7 +124,7 @@ assembly = model.rootAssembly
 instance = createInstance(assembly, part, INSTANCE_NAME)
 loadStep = createLoadStep(model, LOAD_STEP_NAME, INITIAL_STEP_NAME)
 encastreBoundaryCondition = createEncastreBoundaryCondition(
-    instance, model, part, INITIAL_STEP_NAME, BOUNDARY_CONDITION_NAME)
+    instance, model, INITIAL_STEP_NAME, BOUNDARY_CONDITION_NAME)
 pressure = createPressure(model, instance, LOAD_STEP_NAME, PRESSURE_NAME)
 
 optimizations.optimize_topology(

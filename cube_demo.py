@@ -1,11 +1,11 @@
 # Add working directory to path so that custom modules can be imported from there
+import sys
+sys.path.append('D:\\Abaqus\\abaqus-scripts')
 import optimizations
 import regionToolset
 import __main__
 from abaqusConstants import *
 from abaqus import *
-import sys
-sys.path.append('D:\\Abaqus\\abaqus-scripts')
 
 execfile("D:/Abaqus/abaqus-scripts/materials.py", __main__.__dict__)
 s = mdb.models['Model-1'].ConstrainedSketch(name='__profile__',
@@ -18,78 +18,42 @@ session.viewports['Viewport: 1'].view.setValues(nearPlane=68.6958,
 s.rectangle(point1=(-50.0, 50.0), point2=(50.0, -50.0))
 p = mdb.models['Model-1'].Part(name='Part-1', dimensionality=THREE_D,
                                type=DEFORMABLE_BODY)
-p = mdb.models['Model-1'].parts['Part-1']
 p.BaseSolidExtrude(sketch=s, depth=100.0)
 s.unsetPrimaryObject()
-p = mdb.models['Model-1'].parts['Part-1']
-session.viewports['Viewport: 1'].setValues(displayedObject=p)
+
 del mdb.models['Model-1'].sketches['__profile__']
-session.viewports['Viewport: 1'].view.setValues(nearPlane=245.697,
-                                                farPlane=486.011, width=402.888, height=157.1, viewOffsetX=44.0313,
-                                                viewOffsetY=-8.72309)
-session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=ON,
-                                                       engineeringFeatures=ON)
-session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
-    referenceRepresentation=OFF)
+
 mdb.models['Model-1'].HomogeneousSolidSection(name='Section-1',
                                               material='Steel', thickness=None)
-p = mdb.models['Model-1'].parts['Part-1']
 c = p.cells
 cells = c.getSequenceFromMask(mask=('[#1 ]', ), )
 region = regionToolset.Region(cells=cells)
-p = mdb.models['Model-1'].parts['Part-1']
 p.SectionAssignment(region=region, sectionName='Section-1', offset=0.0,
                     offsetType=MIDDLE_SURFACE, offsetField='',
                     thicknessAssignment=FROM_SECTION)
 a = mdb.models['Model-1'].rootAssembly
-session.viewports['Viewport: 1'].setValues(displayedObject=a)
-session.viewports['Viewport: 1'].assemblyDisplay.setValues(
-    optimizationTasks=OFF, geometricRestrictions=OFF, stopConditions=OFF)
-a = mdb.models['Model-1'].rootAssembly
 a.DatumCsysByDefault(CARTESIAN)
-p = mdb.models['Model-1'].parts['Part-1']
 a.Instance(name='Part-1-1', part=p, dependent=ON)
-session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON)
-session.viewports['Viewport: 1'].assemblyDisplay.meshOptions.setValues(
-    meshTechnique=ON)
-p = mdb.models['Model-1'].parts['Part-1']
-session.viewports['Viewport: 1'].setValues(displayedObject=p)
-session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=OFF,
-                                                       engineeringFeatures=OFF, mesh=ON)
-session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
-    meshTechnique=ON)
-p = mdb.models['Model-1'].parts['Part-1']
 p.seedPart(size=2.0, deviationFactor=0.1, minSizeFactor=0.1)
-p = mdb.models['Model-1'].parts['Part-1']
-c = p.cells
 pickedRegions = c.getSequenceFromMask(mask=('[#1 ]', ), )
 p.generateMesh(regions=pickedRegions)
-p = mdb.models['Model-1'].parts['Part-1']
 p.deleteMesh()
-p = mdb.models['Model-1'].parts['Part-1']
-c = p.cells
 pickedRegions = c.getSequenceFromMask(mask=('[#1 ]', ), )
 p.setMeshControls(regions=pickedRegions, technique=BOTTOM_UP)
-p = mdb.models['Model-1'].parts['Part-1']
 f = p.faces
 pickedRegions = f.getSequenceFromMask(mask=('[#8 ]', ), )
 p.generateMesh(regions=pickedRegions, boundaryPreview=ON)
 mdb.meshEditOptions.setValues(enableUndo=True, maxUndoCacheElements=0.5)
-p = mdb.models['Model-1'].parts['Part-1']
-f = p.faces
 faces = f.getSequenceFromMask(mask=('[#8 ]', ), )
 pickedGeomSourceSide = regionToolset.Region(faces=faces)
 v1 = p.vertices
 v2 = p.vertices
 vector = (v1[0], v2[1])
-p = mdb.models['Model-1'].parts['Part-1']
 c1 = p.cells
 p.generateBottomUpExtrudedMesh(cell=c1[0],
                                geometrySourceSide=pickedGeomSourceSide, extrudeVector=vector,
                                numberOfLayers=50)
-a = mdb.models['Model-1'].rootAssembly
 a.regenerate()
-a = mdb.models['Model-1'].rootAssembly
 session.viewports['Viewport: 1'].setValues(displayedObject=a)
 session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF,
                                                            adaptiveMeshConstraints=ON)
@@ -108,22 +72,8 @@ session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
 session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
     referenceRepresentation=ON)
 p1 = mdb.models['Model-1'].parts['Part-1']
-session.viewports['Viewport: 1'].setValues(displayedObject=p1)
-a = mdb.models['Model-1'].rootAssembly
-session.viewports['Viewport: 1'].setValues(displayedObject=a)
 session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=OFF, bcs=OFF,
                                                            predefinedFields=OFF, connectors=OFF)
-p1 = mdb.models['Model-1'].parts['Part-1']
-session.viewports['Viewport: 1'].setValues(displayedObject=p1)
-session.viewports['Viewport: 1'].partDisplay.setValues(mesh=ON)
-session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
-    meshTechnique=ON)
-session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
-    referenceRepresentation=OFF)
-a = mdb.models['Model-1'].rootAssembly
-session.viewports['Viewport: 1'].setValues(displayedObject=a)
-session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON,
-                                                           predefinedFields=ON, connectors=ON)
 session.viewports['Viewport: 1'].view.setValues(nearPlane=248.599,
                                                 farPlane=483.108, width=338.585, height=132.026, viewOffsetX=18.5983,
                                                 viewOffsetY=-3.14915)
@@ -132,39 +82,25 @@ session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
     meshTechnique=OFF)
 session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
     referenceRepresentation=ON)
-p1 = mdb.models['Model-1'].parts['Part-1']
-session.viewports['Viewport: 1'].setValues(displayedObject=p1)
-a = mdb.models['Model-1'].rootAssembly
-session.viewports['Viewport: 1'].setValues(displayedObject=a)
 session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=ON, loads=OFF,
                                                            bcs=OFF, predefinedFields=OFF, connectors=OFF)
 session.viewports['Viewport: 1'].assemblyDisplay.meshOptions.setValues(
     meshTechnique=ON)
-p = mdb.models['Model-1'].parts['Part-1']
 session.viewports['Viewport: 1'].setValues(displayedObject=p)
 session.viewports['Viewport: 1'].partDisplay.setValues(mesh=ON)
 session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
     meshTechnique=ON)
 session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
     referenceRepresentation=OFF)
-a = mdb.models['Model-1'].rootAssembly
-session.viewports['Viewport: 1'].setValues(displayedObject=a)
-p = mdb.models['Model-1'].parts['Part-1']
-session.viewports['Viewport: 1'].setValues(displayedObject=p)
-a = mdb.models['Model-1'].rootAssembly
-session.viewports['Viewport: 1'].setValues(displayedObject=a)
 session.viewports['Viewport: 1'].assemblyDisplay.setValues(mesh=OFF, loads=ON,
                                                            bcs=ON, predefinedFields=ON, connectors=ON)
 session.viewports['Viewport: 1'].assemblyDisplay.meshOptions.setValues(
     meshTechnique=OFF)
 session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=OFF, bcs=OFF,
                                                            predefinedFields=OFF, connectors=OFF)
-session.viewports['Viewport: 1'].partDisplay.setValues(mesh=OFF)
-session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
-    meshTechnique=OFF)
+
 session.viewports['Viewport: 1'].partDisplay.geometryOptions.setValues(
     referenceRepresentation=ON)
-p = mdb.models['Model-1'].parts['Part-1']
 session.viewports['Viewport: 1'].setValues(displayedObject=p)
 session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=ON,
                                                        engineeringFeatures=ON)
@@ -174,10 +110,7 @@ session.viewports['Viewport: 1'].partDisplay.setValues(sectionAssignments=OFF,
                                                        engineeringFeatures=OFF, mesh=ON)
 session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
     meshTechnique=ON)
-p = mdb.models['Model-1'].parts['Part-1']
 p.undoMeshEdit()
-p = mdb.models['Model-1'].parts['Part-1']
-f = p.faces
 faces = f.getSequenceFromMask(mask=('[#8 ]', ), )
 pickedGeomSourceSide = regionToolset.Region(faces=faces)
 v1 = p.vertices
@@ -185,9 +118,7 @@ v2 = p.vertices
 vector = (v1[0], v2[1])
 p.generateBottomUpExtrudedMesh(geometrySourceSide=pickedGeomSourceSide,
                                extrudeVector=vector, numberOfLayers=50)
-a = mdb.models['Model-1'].rootAssembly
 a.regenerate()
-session.viewports['Viewport: 1'].setValues(displayedObject=a)
 session.viewports['Viewport: 1'].assemblyDisplay.setValues(loads=ON, bcs=ON,
                                                            predefinedFields=ON, connectors=ON)
 session.viewports['Viewport: 1'].view.setValues(nearPlane=239.77,
@@ -234,7 +165,6 @@ session.viewports['Viewport: 1'].view.setValues(nearPlane=260.996,
                                                     4.22084, 287.954, 269.932), cameraUpVector=(0.00135245, 0.405623,
                                                                                                 -0.914039), cameraTarget=(-21.5524, 23.0476, 18.916),
                                                 viewOffsetX=36.2621, viewOffsetY=-27.92)
-a = mdb.models['Model-1'].rootAssembly
 f1 = a.instances['Part-1-1'].elements
 face1Elements1 = f1.getSequenceFromMask(mask=(
     '[#0:31 #f0000000 #7f #1ffc000 #0 #7ff #1ffc0000',
@@ -361,7 +291,6 @@ session.viewports['Viewport: 1'].view.setValues(nearPlane=304.794,
                                                     -51.228, -54.863, -328.929), cameraUpVector=(0.0583938, 0.969201,
                                                                                                  0.239252), cameraTarget=(26.8089, -21.5902, 26.9529),
                                                 viewOffsetX=42.8757, viewOffsetY=-17.9155)
-a = mdb.models['Model-1'].rootAssembly
 n1 = a.instances['Part-1-1'].nodes
 nodes1 = n1.getSequenceFromMask(mask=(
     '[#0:4063 #c0000000 #ff #7ffffc0 #fe000000 #3fff #fffff000',
@@ -379,13 +308,11 @@ session.viewports['Viewport: 1'].partDisplay.meshOptions.setValues(
     meshTechnique=OFF)
 p = mdb.models['Model-1'].parts['Part-1']
 session.viewports['Viewport: 1'].setValues(displayedObject=p)
-p = mdb.models['Model-1'].parts['Part-1']
 e = p.elements
 elements = e.getSequenceFromMask(mask=('[#ffffffff:3906 #ff ]', ), )
 region = regionToolset.Region(elements=elements)
-p = mdb.models['Model-1'].parts['Part-1']
 p.SectionAssignment(region=region, sectionName='Section-1', offset=0.0,
                     offsetType=MIDDLE_SURFACE, offsetField='',
                     thicknessAssignment=FROM_SECTION)
 
-optimizations.optimize_topology(session, p, 'Model-1', 'Step-1', 1.25, 2.5)
+optimizations.optimize_topology(session, p, 'Model-1', 'Step-1', 1.25, 10)
