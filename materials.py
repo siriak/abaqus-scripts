@@ -1,5 +1,6 @@
 STEEL = 'Steel'
 
+
 def add_steel(model):
     # Create a material.
     steel = model.Material(name=STEEL)
@@ -10,8 +11,10 @@ def add_steel(model):
 
     return steel
 
+
 def add_all(model):
     add_steel(model)
+
 
 if (__name__ == "__main__"):
     add_all(mdb.models[mdb.models.keys()[0]])
